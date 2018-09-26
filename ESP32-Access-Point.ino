@@ -42,6 +42,7 @@ void loop()
           {
             char c = client.read();         // read a byte, then
             Serial.write(c);                // print it out the serial monitor
+            client.write(c);                // Send byte back
           }
       }
       Serial.println();

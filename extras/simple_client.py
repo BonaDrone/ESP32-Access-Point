@@ -17,6 +17,12 @@ def main(host, port, data="test data"):
 	sock.connect((host, port))
 	data_sent = sock.send(data)
 	print "Sent "+str(data_sent)+" bytes of data"
+	# ESP32 response
+	recv_data = ""
+	while len(recv_data) < len(data):
+		recv_data += sock.recv(1)
+	sock.close()
+	print "Received message: "+str(recv_data)
 
 
 if __name__ == '__main__':
