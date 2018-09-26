@@ -37,4 +37,4 @@ New Client
 DATA_TO_SEND
 Client Disconnected
 ```
-in the Serial monitor.
+in the Serial Monitor.
