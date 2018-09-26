@@ -37,4 +37,9 @@ New Client
 DATA_TO_SEND
 Client Disconnected
 ```
-in the Serial Monitor.
+in the Serial Monitor and, in the terminal from where you executed the script:
+```
+Sent N bytes of data
+Received message: DATA_TO_SEND
+```
+Where N is the number of bytes of the message that was sent.
