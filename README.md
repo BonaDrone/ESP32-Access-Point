@@ -1,6 +1,8 @@
-# ESP32-Access-Point
-Example code to configure the ESP32 as a WiFi access point
+# ESP32-Sketchs
+This repo contains:
 
+1. Example code to configure the ESP32 as a WiFi access point
+2. Example code to configure the ESP32 as a WiFi access point and proxy data to the main microcontroller
 ## Notes
 
 ### Requirements
