@@ -6,7 +6,7 @@
 
 // password should be equal or longer than 8 chars
 // for enabling this configuration
-const char *ssid = "BonaDrone";
+const char *ssid = "Bonadrone";
 const char *password = "12345678";
 
 // Set web server port number to 80
