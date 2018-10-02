@@ -15,14 +15,14 @@ def main(host, port, data="test data"):
 	# create new socket
 	sock = socket.socket()
 	sock.connect((host, port))
-	data_sent = sock.send(data)
-	print "Sent " + str(data_sent) + " bytes of data"
+	data_sent = sock.send(data.encode())
+	print("Sent " + str(data_sent) + " bytes of data")
 	# ESP32 response
 	recv_data = ""
 	while len(recv_data) < len(data):
 		recv_data += sock.recv(1)
 	sock.close()
-	print "Received message: " + str(recv_data)
+	print("Received message: " + str(recv_data))
 
 
 if __name__ == '__main__':
