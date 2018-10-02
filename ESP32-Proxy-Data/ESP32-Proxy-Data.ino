@@ -43,6 +43,7 @@ void loop()
             char c = client.read();         // read a byte, then
             Serial.write(c);                // send it out through the serial
           }
+          delay(100);
           while (Serial.available() > 0)
           {
             char c = Serial.read();
