@@ -35,7 +35,7 @@ void loop()
 
   if (client)                               // If a new client connects, 
   {
-      //Serial.println("New Client");         // print a message out in the serial port
+      Serial.println("New Client");         // print a message out in the serial port
       while (client.connected())            // loop while the client's connected
       {
           while (client.available() > 0)    // if there's bytes to read from the client,
@@ -50,7 +50,9 @@ void loop()
             client.write(c);
           }
       }
-
+      Serial.println();
+      // Close the connection
       client.stop();
+      Serial.println("Client disconnected");
   }
 }
