@@ -20,7 +20,7 @@ def main(host, port, data="test data"):
 	# ESP32 response
 	recv_data = ""
 	while len(recv_data) < len(data):
-		recv_data += sock.recv(1)
+		recv_data += sock.recv(1).decode()
 	sock.close()
 	print("Received message: " + str(recv_data))
 
