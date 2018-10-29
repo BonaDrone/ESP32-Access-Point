@@ -26,15 +26,19 @@ import csv
 # Default ESP32 HOST and PORT
 HOST = "192.168.4.1"
 PORT = 80
+# default number of bytes to close and open new socket
+DEFAULT_BYTES_LIMIT = 50
 
 # Command line arguments
 parser = argparse.ArgumentParser(description='ESP32 wifi based data logger')
 parser.add_argument('-f','--file', type=str, action='store', help="file to store data", default="data.csv")
 parser.add_argument('-t','--terminator', type=str, action='store', help="data line terminator", default="\n")
+parser.add_argument('-b','--bytes', type=int, action='store', 
+					help="number of bytes to receive before closing and opening new socket")
 
 args = parser.parse_args()
 
-def main(host, port, terminator="\n", file="data.csv"):
+def main(host, port, bytes_limit, terminator="\n", file="data.csv"):
 	# create new socket and bind it to the ESP32
 	sock = socket.socket()
 	sock.connect((host, port))
@@ -70,7 +74,7 @@ def main(host, port, terminator="\n", file="data.csv"):
 				# Update received bytes counter and
 				# reset if necessary
 				j+=1
-				if j == 50:
+				if j == bytes_limit:
 					j = 0
 					sock.close()
 					sock = socket.socket()
@@ -83,4 +87,6 @@ def main(host, port, terminator="\n", file="data.csv"):
 	sock.close()
 
 if __name__ == '__main__':
-	main(HOST, PORT, terminator=args.terminator, file=args.file)
+	if not args.bytes:
+		args.bytes = DEFAULT_BYTES_LIMIT
+	main(HOST, PORT, args.bytes, terminator=args.terminator, file=args.file)
