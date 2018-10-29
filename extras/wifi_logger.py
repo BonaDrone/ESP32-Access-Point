@@ -48,6 +48,9 @@ def main(host, port, terminator="\n", file="data.csv"):
 	# receiving inconsistent data. If the socket is
 	# closed and a new one is created this problem
 	# is magically avoided.
+	# Upon further inspection, it seems that limit
+	# has to be fine tuned depending on the data
+	# to be received
 	j = 0
 	with open(file, "w") as f:
 		# Loop forever my friend
