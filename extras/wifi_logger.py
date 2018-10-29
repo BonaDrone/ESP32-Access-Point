@@ -47,6 +47,7 @@ def main(host, port, bytes_limit, terminator="\n", file="data.csv"):
 	sock = socket.socket()
 	sock.connect((host, port))
 	print("Connected to ESP32")
+	# Wait for everything to setup
 	time.sleep(0.5)
 	# to store ESP32 received data
 	recv_data = ""
@@ -68,7 +69,8 @@ def main(host, port, bytes_limit, terminator="\n", file="data.csv"):
 				data = sock.recv(1).decode()
 				recv_data += data
 				if data == terminator:
-					# wipe out terminator
+					# wipe out terminator since it is
+					# not required for it to be "\n"
 					recv_data = recv_data[:-1]
 					print(recv_data)
 					# write to csv file and reset line
