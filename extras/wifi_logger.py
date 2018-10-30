@@ -41,14 +41,50 @@ parser.add_argument('-b','--bytes', type=int, action='store',
 
 args = parser.parse_args()
 
+def data_not_corrupted(data, reference):
+	"""
+	Perform sanity checks to validate that the received data
+	matches the expected format
+	"""
+	# Check equal lengths
+	if len(reference)-3 > len(data) > len(reference)+3:
+		return False
+	# Check equal number of values
+	data_vals = data.split(",")
+	ref_vals = reference.split(",")
+	if len(data_vals) != len(ref_vals):
+		return False
+	# Check equal value format for each value
+	for idx in range(len(ref_vals)):
+		if data_vals[idx].count(".") != ref_vals[idx].count("."):
+			return False
+	return True
+
+def write_log(reference, success, fail):
+	"""
+	Write transmission log to terminal
+	"""
+	print("\nReference line was: {}\nTotal lines received: {}\nSuccessful: {}\nCorrupted: {}".format(reference,
+																								 success+fail,
+																								 success,
+																								 fail))
+
+
 
 def main(host, port, bytes_limit, terminator="\n", file="data.csv"):
+	# intialize counters of successful and corrupted lines
+	# as well as the reference line variable
+	successful_lines = 0
+	corrupted_lines = 0
+	reference_line = ""
+	ref_line_set = False
+	received_terminator = False
 	# create new socket and bind it to the ESP32
 	sock = socket.socket()
 	sock.connect((host, port))
 	print("Connected to ESP32")
 	# Wait for everything to setup
-	time.sleep(0.5)
+	time.sleep(0.6)
 	# to store ESP32 received data
 	recv_data = ""
 	# Start counting the number of received bytes.
@@ -73,10 +109,20 @@ def main(host, port, bytes_limit, terminator="\n", file="data.csv"):
 					# not required for it to be "\n"
 					recv_data = recv_data[:-1]
 					print(recv_data)
-					# write to csv file and reset line
-					f.write(recv_data)
-					f.write("\n")
+					# the second time we receive the terminator
+					# set the received data as the reference format
+					if not ref_line_set and received_terminator:
+						reference_line = recv_data
+						ref_line_set = True
+					if data_not_corrupted(recv_data, reference_line):
+						# write to csv file and reset line
+						f.write(recv_data)
+						f.write("\n")
+						successful_lines += 1
+					else:
+						corrupted_lines += 1	
 					recv_data = ""
+					received_terminator = True
 				# Update received bytes counter and
 				# reset if necessary
 				j+=1
@@ -91,6 +137,7 @@ def main(host, port, bytes_limit, terminator="\n", file="data.csv"):
 			except KeyboardInterrupt:
 				break
 	sock.close()
+	write_log(reference_line, successful_lines, corrupted_lines)
 
 
 if __name__ == '__main__':
