@@ -27,6 +27,8 @@ Make sure you have first uploaded the `ESP32_flash_loader.ino` under the `extras
 
 ### Check connection
 
+**Note**: For the following to work, `ESP32-Access-Point.ino` should be loaded in the ESP32.
+
 After connecting your laptop to the ESP32 (you should see a BonaDrone network in the list of detected WiFi networks) you can test the connection via the script `simple_client.py` located under the `extras` folder. To do so:
 
 1. Open Arduino's Serial Monitor
