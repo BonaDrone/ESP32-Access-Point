@@ -15,7 +15,7 @@ Make sure you have first uploaded the `ESP32_flash_loader.ino` under the `extras
 2. Connect ESP32 GPIO 0 pin to ground
 3. With the previous connection done, power the board
 
-### Arduino settings to program the ESP32
+### Arduino IDE settings to program the ESP32
 
 * Upload Speed: 115200
 * Flash Frequency: 80 MHz
