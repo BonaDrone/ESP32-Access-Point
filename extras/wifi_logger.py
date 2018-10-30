@@ -64,12 +64,11 @@ def write_log(reference, success, fail):
 	"""
 	Write transmission log to terminal
 	"""
-	print("\nReference line was: {}\nTotal lines received: {}\nSuccessful: {}\nCorrupted: {}".format(reference,
-																								 success+fail,
-																								 success,
-																								 fail))
-
-
+	print("\nReference line was: {}\nTotal lines received: {}\nSuccessful: {}\nCorrupted: {}".format(
+		reference,
+		success+fail,
+		success,
+		fail))
 
 def main(host, port, bytes_limit, terminator="\n", file="data.csv"):
 	# intialize counters of successful and corrupted lines
@@ -138,7 +137,6 @@ def main(host, port, bytes_limit, terminator="\n", file="data.csv"):
 				break
 	sock.close()
 	write_log(reference_line, successful_lines, corrupted_lines)
-
 
 if __name__ == '__main__':
 	if not args.bytes:
