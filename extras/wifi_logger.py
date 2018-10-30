@@ -100,7 +100,6 @@ def main(host, port, bytes_limit, terminator="\n", file="data.csv"):
 		# Loop forever my friend
 		while True:
 			try:
-				# 
 				data = sock.recv(1).decode()
 				recv_data += data
 				if data == terminator:
