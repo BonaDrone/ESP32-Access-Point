@@ -15,7 +15,7 @@ Make sure you have first uploaded the `ESP32_flash_loader.ino` under the `extras
 2. Connect ESP32 GPIO 0 pin to ground
 3. With the previous connection done, power the board
 
-### Arduino settings to program the ESP32
+### Arduino IDE settings to program the ESP32
 
 * Upload Speed: 115200
 * Flash Frequency: 80 MHz
@@ -26,6 +26,8 @@ Make sure you have first uploaded the `ESP32_flash_loader.ino` under the `extras
 * PSRAM: Disabled
 
 ### Check connection
+
+**Note**: For the following to work, `ESP32-Access-Point.ino` should be loaded in the ESP32.
 
 After connecting your laptop to the ESP32 (you should see a BonaDrone network in the list of detected WiFi networks) you can test the connection via the script `simple_client.py` located under the `extras` folder. To do so:
 
