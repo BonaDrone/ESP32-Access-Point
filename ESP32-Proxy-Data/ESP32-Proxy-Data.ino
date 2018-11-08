@@ -6,7 +6,7 @@
 
 // password should be equal or longer than 8 chars
 // for enabling this configuration
-const char *ssid = "Bonadrone";
+const char *ssid = "Mosquito150";
 const char *password = "12345678";
 
 // Set web server port number to 80
@@ -43,11 +43,10 @@ void loop()
             char c = client.read();         // read a byte, then
             Serial.write(c);                // send it out through the serial
           }
-          delay(100);
-          while (Serial.available() > 0)
+          while (Serial.available() > 0)    // if there's bytes to read from the serial
           {
-            char c = Serial.read();
-            client.write(c);
+            char c = Serial.read();         // read a byte, then
+            client.write(c);                // send it to the client
           }
       }
       Serial.println();
