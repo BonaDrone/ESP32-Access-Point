@@ -18,13 +18,8 @@ void setup()
 
     // Connect to Wi-Fi network with SSID and password
     // Remove the password parameter, if you want the AP (Access Point) to be open
-    Serial.print("Setting AP (Access Point)…");
     WiFi.softAP(ssid, password);
-
     IPAddress IP = WiFi.softAPIP();
-    Serial.print("AP IP address: ");
-    Serial.println(IP);
-  
     server.begin();
 }
 
@@ -35,7 +30,6 @@ void loop()
 
   if (client)                               // If a new client connects, 
   {
-      Serial.println("New Client");         // print a message out in the serial port
       while (client.connected())            // loop while the client's connected
       {
           while (client.available() > 0)    // if there's bytes to read from the client,
@@ -49,9 +43,7 @@ void loop()
             client.write(c);                // send it to the client
           }
       }
-      Serial.println();
       // Close the connection
       client.stop();
-      Serial.println("Client disconnected");
   }
 }
