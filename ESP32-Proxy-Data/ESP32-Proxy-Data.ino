@@ -41,8 +41,8 @@ void loop()
             char c = Serial.read();         // read a byte, then
             client.write(c);                // send it to the client
           }
-      }
-      // Close the connection
-      client.stop();
+      }                                     // When the client disconnects
+      client.stop();                        // close the connection
   }
+  
 }
