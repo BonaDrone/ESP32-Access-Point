@@ -15,18 +15,6 @@ const int LOW_BATTERY_3S = 2151;  // 10.5V for 3S batteries
 
 int _lowBattery = 0;
 
-// The ESP32 default IP address is 192.168.4.1
-// To set a different static IP see:
-// https://github.com/espressif/arduino-esp32/blob/master/libraries/WiFi/examples/WiFiClientStaticIP/WiFiClientStaticIP.ino
-
-// password should be equal or longer than 8 chars
-// for enabling this configuration
-const char *ssid = "Mosquito150";
-const char *password = "12345678";
-
-// Set web server port number to 80
-WiFiServer server(80);
-
 void setLowBatteryLimit(void)
 {
     int batteryStatus = analogRead(BATTERY_PIN);
@@ -48,11 +36,13 @@ void setLowBatteryLimit(void)
     // XXX What if none of the above criteria is met?
 }
 
-void checkSignal(bool hadClient)
+void checkBattery(void)
 {
-    if(hadClient)
+    if (analogRead(BATTERY_PIN) <= _lowBattery)
     {
-        // Quick and dirty hack to send lost signal message
+        // XXX implement low battery message if we want to
+        // handle it different than a lost signal
+        // trigger low battery message (currently Lost signal)
         // The message ID is 223 and the full message is
         // $M<\x01\xdf\x01\xdf, where \x01 -> 1 and \xdf -> 223
         Serial.write(36);
@@ -65,11 +55,22 @@ void checkSignal(bool hadClient)
     }
 }
 
-void checkBattery(void)
+// The ESP32 default IP address is 192.168.4.1
+// To set a different static IP see:
+// https://github.com/espressif/arduino-esp32/blob/master/libraries/WiFi/examples/WiFiClientStaticIP/WiFiClientStaticIP.ino
+
+// password should be equal or longer than 8 chars
+// for enabling this configuration
+const char *ssid = "Mosquito150";
+const char *password = "12345678";
+// Set web server port number to 80
+WiFiServer server(80);
+
+void checkSignal(bool hadClient)
 {
-    if (analogRead(BATTERY_PIN) <= _lowBattery)
+    if(hadClient)
     {
-        // trigger low battery message (currently Lost signal)
+        // Quick and dirty hack to send lost signal message
         // The message ID is 223 and the full message is
         // $M<\x01\xdf\x01\xdf, where \x01 -> 1 and \xdf -> 223
         Serial.write(36);
