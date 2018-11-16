@@ -5,13 +5,13 @@ const int BATTERY_PIN = 33; // specific to BonaDrone FC board
 // 1S operative range (3.5V-4.2V)
 // 2S operative range (7V-8.3V)
 // 3S operative range (10.5V-12.5V)
-// Since operative ranges do not overlap, we can determine
-// the type of battery being used from the first reading
-// and set the low battery limit accordingly. The values
-// defined below assume that 5V = 1023
-const int LOW_BATTERY_1S = 717;   // 3.5V for 1S batteries
-const int LOW_BATTERY_2S = 1434;  // 7.0V for 2S batteries
-const int LOW_BATTERY_3S = 2151;  // 10.5V for 3S batteries
+// Since operative ranges do not overlap, we can determine the type
+// of battery being used from the first reading and set the low
+// battery limit accordingly. The values defined below assume that
+// 11.0V = 3860 and are rounded to the upper ten
+const int LOW_BATTERY_1S = 1230;  // 3.5V for 1S batteries
+const int LOW_BATTERY_2S = 2450;  // 7.0V for 2S batteries
+const int LOW_BATTERY_3S = 3670;  // 10.5V for 3S batteries
 
 int _lowBattery = 0;
 
