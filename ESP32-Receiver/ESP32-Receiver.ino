@@ -47,7 +47,7 @@ void setLowBatteryLimit(void)
 }
 
 // Sampling at 10Hz (10 samples in one second) yields
-// 100 samples in 10 seconds. If the average of the 
+// 150 samples in 15 seconds. If the average of the 
 // samples goes below the low battery threshold then
 // trigger low battery
 void checkBattery(void)
