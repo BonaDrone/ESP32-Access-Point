@@ -15,6 +15,16 @@ const int LOW_BATTERY_3S = 3670;  // 10.5V for 3S batteries
 
 int _lowBattery = 0;
 
+// Monitor battery status
+int const BATTERY_SAMPLES = 150;
+int BATTERY_HISTORY[BATTERY_SAMPLES];
+int batteryIndex = 0;
+int batterySum = 0;
+// Battery sampling 
+int sampleFrequency = 10; // In Hz
+unsigned long lastSampleTime = millis();
+unsigned long currentTime = millis();
+
 void setLowBatteryLimit(void)
 {
     int batteryStatus = analogRead(BATTERY_PIN);
@@ -36,24 +46,38 @@ void setLowBatteryLimit(void)
     // XXX What if none of the above criteria is met?
 }
 
+// Sampling at 10Hz (10 samples in one second) yields
+// 100 samples in 10 seconds. If the average of the 
+// samples goes below the low battery threshold then
+// trigger low battery
 void checkBattery(void)
 {
-    // Avoid sending low battery message if no battery is
-    // connected (analogRead = _lowBattery = 0)
-    if (analogRead(BATTERY_PIN) < _lowBattery)
+    // update battery reading
+    currentTime = millis();
+    if (currentTime - lastSampleTime > 1000.0f/sampleFrequency)
     {
-        // XXX implement low battery message if we want to
-        // handle it different than a lost signal
-        // trigger low battery message (currently Lost signal)
-        // The message ID is 223 and the full message is
-        // $M<\x01\xe0\x01\xe0, where \x01 -> 1 and \xe0 -> 224
-        Serial.write(36);
-        Serial.write(77);
-        Serial.write(60);
-        Serial.write(1);
-        Serial.write(224);
-        Serial.write(1);
-        Serial.write(224);
+        int batteryStatus = analogRead(BATTERY_PIN);
+        batterySum = batterySum - BATTERY_HISTORY[batteryIndex] + batteryStatus;
+        BATTERY_HISTORY[batteryIndex] = batteryStatus;
+        batteryIndex = (batteryIndex + 1) % BATTERY_SAMPLES;
+        // Avoid sending low battery message if no battery is
+        // connected (analogRead = _lowBattery = 0)
+        if (batterySum / BATTERY_SAMPLES < _lowBattery)
+        {
+            // XXX implement low battery message if we want to
+            // handle it different than a lost signal
+            // trigger low battery message (currently Lost signal)
+            // The message ID is 223 and the full message is
+            // $M<\x01\xe0\x01\xe0, where \x01 -> 1 and \xe0 -> 224
+            Serial.write(36);
+            Serial.write(77);
+            Serial.write(60);
+            Serial.write(1);
+            Serial.write(224);
+            Serial.write(1);
+            Serial.write(224);
+        }
+        lastSampleTime = currentTime;
     }
 }
 
@@ -89,8 +113,14 @@ void setup()
 {
     Serial.begin(115200);
     pinMode(BATTERY_PIN, INPUT);
-    // Wait until type of battery (number of cells) is received
+    // Determine type of battery (number of cells)
     setLowBatteryLimit();
+    int batteryOnStartup = analogRead(BATTERY_PIN);
+    for (int i=0;i<BATTERY_SAMPLES;++i)
+    {
+      BATTERY_HISTORY[i] = batteryOnStartup;
+      batterySum += batteryOnStartup;
+    }
     // Connect to Wi-Fi network with SSID and password
     // Remove the password parameter, if you want the AP (Access Point) to be open
     WiFi.softAP(ssid, password);
