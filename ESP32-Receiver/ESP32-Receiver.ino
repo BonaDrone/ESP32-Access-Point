@@ -38,7 +38,9 @@ void setLowBatteryLimit(void)
 
 void checkBattery(void)
 {
-    if (analogRead(BATTERY_PIN) <= _lowBattery)
+    // Avoid sending low battery message if no battery is
+    // connected (analogRead = _lowBattery = 0)
+    if (analogRead(BATTERY_PIN) < _lowBattery)
     {
         // XXX implement low battery message if we want to
         // handle it different than a lost signal
