@@ -44,14 +44,14 @@ void checkBattery(void)
         // handle it different than a lost signal
         // trigger low battery message (currently Lost signal)
         // The message ID is 223 and the full message is
-        // $M<\x01\xdf\x01\xdf, where \x01 -> 1 and \xdf -> 223
+        // $M<\x01\xe0\x01\xe0, where \x01 -> 1 and \xe0 -> 224
         Serial.write(36);
         Serial.write(77);
         Serial.write(60);
         Serial.write(1);
-        Serial.write(223);
+        Serial.write(224);
         Serial.write(1);
-        Serial.write(223);
+        Serial.write(224);
     }
 }
 
