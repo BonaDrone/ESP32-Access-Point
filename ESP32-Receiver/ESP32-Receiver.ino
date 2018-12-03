@@ -6,7 +6,7 @@
 
 // password should be equal or longer than 8 chars
 // for enabling this configuration
-const char *ssid = "Mosquito150";
+const char *ssid = "Mosquito90";
 const char *password = "12345678";
 
 // Set web server port number to 80
@@ -18,14 +18,14 @@ void sendLostSignal(bool hadClient)
     {
         // Quick and dirty hack to send lost signal message
         // The message ID is 223 and the full message is
-        // $M<\x01\xdf\x01\xdf, where \x01 -> 1 and \xdf -> 223
+        // $M<\x01\xe2\x01\xe2, where \x01 -> 1 and \xe2 -> 226
         Serial.write(36);
         Serial.write(77);
         Serial.write(60);
         Serial.write(1);
-        Serial.write(223);
+        Serial.write(226);
         Serial.write(1);
-        Serial.write(223);
+        Serial.write(226);
     }
 }
 
