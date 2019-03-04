@@ -26,6 +26,8 @@ floatUnion_t batteryVoltage;
 void measureBatteryVoltage()
 {
   const float voltageDivider = 1.15;
+  const float voltageResolution = 4096.0;
+  const float voltageMaximum = 12.60;
   
   static float batLast = 0.0;
   static float batTrend = 0.0;
@@ -34,8 +36,8 @@ void measureBatteryVoltage()
   float sFact_1 = 0.2;
   float sFact_2 = 0.8;
   
-  int meas = analogRead(33);
-  float batMeas = (float)meas/4096.0*12.60;
+  int meas = analogRead(BATTERY_PIN);
+  float batMeas = (float)meas/voltageResolution*voltageMaximum;
 
   float bat = 0.0;
   if (ii == 0)
@@ -104,12 +106,9 @@ void setup()
 
     // Connect to Wi-Fi network with SSID and password
     // Remove the password parameter, if you want the AP (Access Point) to be open
-    Serial.print("Setting AP (Access Point)…");
     WiFi.softAP(ssid, password);
 
     IPAddress IP = WiFi.softAPIP();
-    Serial.print("AP IP address: ");
-    Serial.println(IP);
   
     server.begin();
     
@@ -125,8 +124,6 @@ void loop()
 
   if (client)                               // If a new client connects, 
   {
-      Serial.println("New Client");
-               // print a message out in the serial port
       while (client.connected())            // loop while the client's connected
       {
           while (client.available() > 0)    // if there's bytes to read from the client,
@@ -139,17 +136,9 @@ void loop()
             char c = Serial.read();         // read a byte, then
             client.write(c);                // send it to the client
           }
-          
           checkBattery();
-          
       }                                     // When the client disconnects
       client.stop();
-          
-      
-      Serial.println();
-      // Close the connection
-      client.stop();
-      Serial.println("Client disconnected");
   }
   else
   {
