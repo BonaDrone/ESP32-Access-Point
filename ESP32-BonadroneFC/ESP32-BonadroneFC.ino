@@ -25,6 +25,8 @@ floatUnion_t batteryVoltage;
 
 void measureBatteryVoltage()
 {
+  const float voltageDivider = 1.15;
+  
   static float batLast = 0.0;
   static float batTrend = 0.0;
   static int ii = 0;
@@ -54,7 +56,7 @@ void measureBatteryVoltage()
   }
   batLast = bat;
   
-  batteryVoltage.number = bat;
+  batteryVoltage.number = bat*voltageDivider;
 }
 
 void sendBatteryVoltage()
