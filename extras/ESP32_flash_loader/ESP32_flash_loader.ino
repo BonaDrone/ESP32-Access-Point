@@ -13,7 +13,6 @@ void setup()
     // and STM32L476 <-> PC (Serial)
     Serial.begin(115200);
     Serial4.begin(115200);
-
     // PIN MODES
     pinMode(LED_R, OUTPUT);
     pinMode(LED_G, OUTPUT);
@@ -22,7 +21,6 @@ void setup()
     digitalWrite(LED_R, HIGH);
     digitalWrite(LED_G, HIGH);
     digitalWrite(LED_B, HIGH);
-
 }
 
 void loop() 
@@ -72,5 +70,3 @@ void loop()
       } 
     }
 }
-
-

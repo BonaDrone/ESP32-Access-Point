@@ -31,12 +31,12 @@ void loop()
   {
       while (client.connected())            // loop while the client's connected
       {
-          while (client.available() > 0)    // if there's bytes to read from the client,
+          if (client.available() > 0)       // if there's bytes to read from the client,
           {
             char c = client.read();         // read a byte, then
             Serial.write(c);                // send it out through the serial
           }
-          while (Serial.available() > 0)    // if there's bytes to read from the serial
+          if (Serial.available() > 0)       // if there's bytes to read from the serial
           {
             char c = Serial.read();         // read a byte, then
             client.write(c);                // send it to the client
