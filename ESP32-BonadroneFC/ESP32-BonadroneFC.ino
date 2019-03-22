@@ -6,7 +6,7 @@
 
 // password should be equal or longer than 8 chars
 // for enabling this configuration
-const char *ssid = "Bonadrone";
+const char *ssid = "Mosquito90_A";
 const char *password = "12345678";
 
 // Set web server port number to 80
@@ -92,7 +92,7 @@ void checkBattery()
 {
   static float lastTime = 0.0;
 
-  if (micros()/1.0e6 - lastTime > 0.1)
+  if (micros()/1.0e6 - lastTime > 1)
   {
     measureBatteryVoltage();
     sendBatteryVoltage();
