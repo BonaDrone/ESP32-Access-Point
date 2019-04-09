@@ -6,7 +6,7 @@
 
 // password should be equal or longer than 8 chars
 // for enabling this configuration
-const char *ssid = "Mosquito90_A";
+const char *ssid = "Mosquito90_D";
 const char *password = "12345678";
 
 // Set web server port number to 80
@@ -88,6 +88,47 @@ void sendBatteryVoltage()
   Serial.write(check);
 }
 
+void sendLand()
+{
+  char b1 = '$';
+  char b2 = 'M';
+  char b3 = '>';
+  uint8_t N = 0;
+  byte T = 0x03;
+
+  uint8_t check;
+  check = N ^ T;
+  
+  Serial.write(b1);
+  Serial.write(b2);
+  Serial.write(b3);
+  Serial.write(N);
+  Serial.write(T);
+  Serial.write(check);
+}
+
+void sendHover()
+{
+  char b1 = '$';
+  char b2 = 'M';
+  char b3 = '>';
+  uint8_t N = 1;
+  byte T = 0x0B;
+  byte seconds = 0x1E;
+
+  uint8_t check;
+  check = N ^ T;
+  check = check ^ seconds;
+  
+  Serial.write(b1);
+  Serial.write(b2);
+  Serial.write(b3);
+  Serial.write(N);
+  Serial.write(T);
+  Serial.write(seconds);
+  Serial.write(check);
+}
+
 void checkBattery()
 {
   static float lastTime = 0.0;
@@ -137,7 +178,12 @@ void loop()
             client.write(c);                // send it to the client
           }
           checkBattery();
-      }                                     // When the client disconnects
+      }  
+      
+      // When the client disconnects
+      sendHover();
+      sendLand();
+      
       client.stop();
   }
   else
